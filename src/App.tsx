@@ -115,7 +115,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-brand-navy-dark text-[#F8FBFF] relative font-sans leading-relaxed selection:bg-brand-cyan/30 selection:text-white">
+    <div className="min-h-screen w-full overflow-x-hidden bg-brand-navy-dark text-[#F8FBFF] relative font-sans leading-relaxed selection:bg-brand-cyan/30 selection:text-white">
       
       {/* 1. Header/Navbar */}
       <Navbar />

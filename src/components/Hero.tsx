@@ -295,7 +295,7 @@ export default function Hero() {
             </div>
 
             {/* The V2 Control unit Box element (Apple/Nothing inspired minimalist cyber look) */}
-            <div className="w-[280px] h-[340px] rounded-[36px] glass-premium relative border border-white/15 flex flex-col justify-between p-6 shadow-2xl overflow-hidden backdrop-blur-2xl">
+            <div className="w-full max-w-[280px] h-[340px] rounded-[36px] glass-premium relative border border-white/15 flex flex-col justify-between p-6 shadow-2xl overflow-hidden backdrop-blur-2xl">
               
               {/* Internal diagonal stripes representing premium tech */}
               <div className="absolute inset-0 bg-[radial-gradient(rgba(0,174,239,0.06)_1px,transparent_1px)] bg-[size:10px_10px] pointer-events-none"></div>
