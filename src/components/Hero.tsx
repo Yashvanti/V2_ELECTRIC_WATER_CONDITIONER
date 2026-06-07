@@ -6,19 +6,32 @@ export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Handle Mouse movement for parallax
+  // Handle Mouse movement or touch movement for parallax
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
+    const handleMove = (clientX: number, clientY: number) => {
       const width = window.innerWidth;
       const height = window.innerHeight;
-      const x = (clientX / width - 0.5) * 35; // move range
-      const y = (clientY / height - 0.5) * 35;
+      const x = (clientX / width - 0.5) * 45; // move range
+      const y = (clientY / height - 0.5) * 45;
       setMousePos({ x, y });
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      handleMove(e.clientX, e.clientY);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
   }, []);
 
   // Background Canvas for flowing flowing particles (micro water currents)
@@ -358,7 +371,7 @@ export default function Hero() {
             {/* Drag/Rotate Visual Guide badge */}
             <div className="absolute -bottom-10 glass-premium px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-white/5 shadow-md">
               <span className="inline-block w-2 h-2 rounded-full bg-brand-cyan animate-ping"></span>
-              <span className="text-[10px] font-medium tracking-wider text-gray-300 uppercase">Hover/Move Mouse to Rotate</span>
+              <span className="text-[10px] font-medium tracking-wider text-gray-300 uppercase">Hover or Drag to Rotate</span>
             </div>
 
           </motion.div>

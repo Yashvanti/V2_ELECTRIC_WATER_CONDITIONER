@@ -98,8 +98,8 @@ export default function BeforeAfterSlider() {
             <div
               ref={containerRef}
               className="relative w-full aspect-[4/3] rounded-[36px] overflow-hidden border border-white/10 shadow-2xl bg-[#01050a] select-none cursor-pointer"
-              onMouseDown={(e) => { e.preventDefault(); setIsDragging(true); }}
-              onTouchStart={() => setIsDragging(true)}
+              onMouseDown={(e) => { e.preventDefault(); setIsDragging(true); handleMove(e.clientX); }}
+              onTouchStart={(e) => { setIsDragging(true); if (e.touches.length > 0) { handleMove(e.touches[0].clientX); } }}
             >
               
               {/* LEFT VIEW: "Without V2" (Rusty scale style frame) */}
