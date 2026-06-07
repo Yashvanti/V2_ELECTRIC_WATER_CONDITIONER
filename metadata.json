@@ -1,0 +1,6 @@
+{
+  "name": "V2 Electronic Water Conditioner",
+  "description": "V2 Electronic Water Conditioner protects Indian homes, appliances, and pipelines from hard water damage without chemicals or salt.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
