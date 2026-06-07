@@ -199,7 +199,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] text-white"
+            className="text-fluid-h1 font-black tracking-tight text-white mb-2"
           >
             Stop Hard Water <br className="hidden sm:inline" />
             <span className="text-gradient">Damage Before It Starts</span>
@@ -210,7 +210,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-base sm:text-lg md:text-xl text-gray-300 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed"
+            className="text-fluid-sub text-gray-300 max-w-xl mx-auto lg:mx-0 font-light"
           >
             Protect pipelines, water heaters, showers, and modern home appliances with the leading chemical-free V2 Electronic Water Conditioner. Designed and manufactured in India.
           </motion.p>

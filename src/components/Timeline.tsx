@@ -78,83 +78,155 @@ export default function Timeline() {
           </p>
         </div>
 
-        {/* Process Steps Connection Pipeline layout (Vertical track) */}
-        <div className="relative max-w-4xl mx-auto flex flex-col gap-12 sm:gap-16">
-          
-          {/* Connecting Pipe Line track with running color gradient gradient block */}
-          <div className="absolute left-[26px] sm:left-1/2 top-4 bottom-4 w-[4px] bg-sky-950/40 -translate-x-1/2 z-0 hidden sm:block">
-            <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-brand-blue via-brand-cyan to-brand-cyan/20 rounded animate-pulse"></div>
+        {/* Process Steps Connection Pipeline layout (Horizontal, Hybrid, and Vertical Viewports) */}
+        
+        {/* 1. DESKTOP VIEWPORT: Horizontal Timeline Roadmap */}
+        <div className="hidden lg:block relative max-w-6xl mx-auto mt-6">
+          {/* Horizontal connection pipeline */}
+          <div className="absolute top-[32px] left-[10%] right-[10%] h-[3px] bg-sky-950/40 z-0">
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-cyan/30 rounded animate-pulse"></div>
           </div>
-
-          {steps.map((item, idx) => {
-            const IconComp = item.icon;
-            const isEven = idx % 2 === 0;
-
-            return (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.65, delay: idx * 0.1 }}
-                className={`relative z-10 flex flex-col sm:flex-row items-stretch ${
-                  isEven ? "sm:flex-row-reverse" : ""
-                }`}
-              >
-                
-                {/* Visual Step bubble divider central column alignment */}
-                <div className="absolute left-6 sm:left-1/2 -translate-x-1/2 top-0 z-20 flex flex-col items-center">
-                  <div className="w-[52px] h-[52px] rounded-full bg-slate-950 border-[3.5px] border-brand-cyan shadow-glow flex items-center justify-center font-extrabold text-[#FFF] text-sm font-mono relative">
+          
+          <div className="grid grid-cols-4 gap-6 relative z-10">
+            {steps.map((item, idx) => {
+              const IconComp = item.icon;
+              return (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 35 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className="flex flex-col items-center text-center"
+                >
+                  {/* Step Bubble marker */}
+                  <div className="w-16 h-16 rounded-full bg-slate-950 border-[3px] border-brand-cyan shadow-glow flex items-center justify-center font-extrabold text-white text-base font-mono relative mb-6">
                     <span className="absolute -inset-1.5 rounded-full border border-brand-cyan/2 w-1.5 h-1.5 animate-ripple"></span>
                     {item.step}
                   </div>
-                  <div className="w-[2px] h-[100%] bg-brand-cyan/20 absolute top-[52px] -z-10 block sm:hidden"></div>
-                </div>
 
-                {/* Left/Right content split flex container */}
-                <div className={`w-full sm:w-[48%] pl-16 sm:pl-0 ${isEven ? "sm:text-right sm:pr-8" : "sm:text-left sm:pl-8"}`}>
-                  <div className="glass-premium p-6 sm:p-7 rounded-[28px] border border-white/5 bg-white/[0.015] hover:border-brand-cyan/20 transition-all duration-300">
-                    
-                    <div className={`flex items-center gap-3 mb-2.5 ${isEven ? "sm:flex-row-reverse" : ""}`}>
-                      <div className="p-2.5 bg-brand-blue/15 rounded-xl text-brand-cyan border border-brand-cyan/20">
-                        <IconComp className="w-5 h-5 text-brand-cyan" />
+                  {/* Step Card details */}
+                  <div className="glass-premium p-5 rounded-[24px] border border-white/5 bg-white/[0.015] hover:border-brand-cyan/20 transition-all duration-300 flex-1 flex flex-col justify-between w-full">
+                    <div>
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <div className="p-2 bg-brand-blue/15 rounded-lg text-brand-cyan border border-brand-cyan/20">
+                          <IconComp className="w-4 h-4 text-brand-cyan" />
+                        </div>
+                        <span className="text-brand-light-blue text-[10px] font-mono tracking-widest uppercase">
+                          {item.duration}
+                        </span>
                       </div>
-                      <span className="text-brand-light-blue text-xs font-mono tracking-widest uppercase">
-                        {item.duration}
-                      </span>
+                      <h3 className="text-white font-extrabold text-base tracking-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-400 text-xs mt-2.5 leading-relaxed font-light text-center">
+                        {item.desc}
+                      </p>
                     </div>
 
-                    <h3 className="text-white font-extrabold text-xl sm:text-2xl tracking-tight leading-snug">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-gray-400 text-xs sm:text-sm mt-3 leading-relaxed font-light font-sans">
-                      {item.desc}
-                    </p>
-
-                    {/* Specifications inside timeline step card */}
-                    <ul className={`flex flex-col gap-2 mt-5 text-[11.5px] font-mono text-cyan-400/90 list-none ${
-                        isEven ? "sm:items-end" : "sm:items-start"
-                      }`}
-                    >
+                    <ul className="flex flex-col gap-1.5 mt-4 text-[10.5px] font-mono text-cyan-400/90 text-left list-none mx-auto">
                       {item.sublist.map((sub, sidx) => (
-                        <li key={sidx} className={`flex items-center gap-2 ${isEven ? "sm:flex-row-reverse" : ""}`}>
-                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse"></span>
+                        <li key={sidx} className="flex items-start gap-1.5">
+                          <span className="inline-block w-1 h-1 rounded-full bg-brand-cyan animate-pulse mt-1.5"></span>
                           <span>{sub}</span>
                         </li>
                       ))}
                     </ul>
-
                   </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 2. TABLET VIEWPORT: Dynamic Hybrid 2x2 Grid Timeline */}
+        <div className="hidden md:grid lg:hidden grid-cols-2 gap-8 relative max-w-3xl mx-auto mt-6">
+          <div className="absolute top-[40px] bottom-[40px] left-[25%] right-[25%] border-2 border-dashed border-brand-cyan/10 rounded-2xl pointer-events-none -z-10"></div>
+          
+          {steps.map((item, idx) => {
+            const IconComp = item.icon;
+            return (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="glass-premium p-6 rounded-[28px] border border-white/5 bg-white/[0.015] hover:border-brand-cyan/20 transition-all duration-300 relative"
+              >
+                <div className="absolute -top-3.5 -left-3.5 w-10 h-10 rounded-full bg-slate-950 border-2 border-brand-cyan shadow-glow flex items-center justify-center font-extrabold text-white text-xs font-mono">
+                  {item.step}
                 </div>
 
-                {/* Invisible balanced block spacer for wide desktop grids */}
-                <div className="hidden sm:block w-[48%] h-2"></div>
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div className="p-2 bg-brand-blue/15 rounded-xl text-brand-cyan border border-brand-cyan/20">
+                    <IconComp className="w-4 h-4 text-brand-cyan" />
+                  </div>
+                  <span className="text-brand-light-blue text-xs font-mono tracking-widest uppercase">
+                    {item.duration}
+                  </span>
+                </div>
 
+                <h3 className="text-white font-extrabold text-base sm:text-lg tracking-tight">
+                  {item.title}
+                </h3>
+                <p className="text-gray-400 text-xs sm:text-sm mt-2 leading-relaxed font-light">
+                  {item.desc}
+                </p>
+
+                <ul className="flex flex-col gap-1 mt-4 text-[11px] font-mono text-cyan-400/90 list-none">
+                  {item.sublist.map((sub, sidx) => (
+                    <li key={sidx} className="flex items-center gap-2">
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse"></span>
+                      <span>{sub}</span>
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
             );
           })}
+        </div>
 
+        {/* 3. MOBILE VIEWPORT: Classic Clean Vertical Timeline */}
+        <div className="block md:hidden relative max-w-sm mx-auto flex flex-col gap-8 mt-6">
+          {/* Vertical connecting line */}
+          <div className="absolute left-[20px] top-4 bottom-4 w-[2px] bg-brand-blue/20 -z-10"></div>
+          
+          {steps.map((item, idx) => {
+            const IconComp = item.icon;
+            return (
+              <motion.div
+                key={item.step}
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="relative flex gap-4 pl-1"
+              >
+                {/* Mobile step bubble */}
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-slate-950 border-2 border-brand-cyan shadow-glow flex items-center justify-center font-extrabold text-white text-xs font-mono relative z-10">
+                  {item.step}
+                </div>
+
+                {/* Mobile step card */}
+                <div className="glass-premium p-4 rounded-[20px] border border-white/5 bg-white/[0.01] hover:border-brand-cyan/20 transition-all duration-300 flex-1">
+                  <div className="flex items-center gap-2 mb-2 pb-1.5 border-b border-white/[0.03]">
+                    <IconComp className="w-4 h-4 text-brand-cyan" />
+                    <span className="text-brand-light-blue text-[10px] font-mono tracking-wider uppercase font-bold">
+                      {item.duration}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-white font-extrabold text-sm tracking-tight mb-1.5">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-400 text-[11px] leading-relaxed font-light">
+                    {item.desc}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Quick CTA inquiry trigger */}

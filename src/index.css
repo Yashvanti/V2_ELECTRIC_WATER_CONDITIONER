@@ -40,6 +40,26 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .text-fluid-h1 {
+    font-size: clamp(2.1rem, 5.2vw, 4.4rem);
+    line-height: 1.1;
+  }
+
+  .text-fluid-h2 {
+    font-size: clamp(1.75rem, 4vw, 3.2rem);
+    line-height: 1.2;
+  }
+
+  .text-fluid-sub {
+    font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+    line-height: 1.5;
+  }
+
+  .text-fluid-body {
+    font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+    line-height: 1.6;
+  }
+
   .shadow-glow {
     box-shadow: 0 0 40px rgba(0, 174, 239, 0.15);
   }

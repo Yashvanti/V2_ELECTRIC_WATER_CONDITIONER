@@ -6,7 +6,12 @@ export default function BeforeAfterSlider() {
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Manage Drag Events
+  // Vertical Slider state for Mobile
+  const [vSliderPosition, setVSliderPosition] = useState(50);
+  const [isDraggingV, setIsDraggingV] = useState(false);
+  const vContainerRef = useRef<HTMLDivElement>(null);
+
+  // Manage Horizontal Drag Events
   const handleMove = (clientX: number) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -31,6 +36,31 @@ export default function BeforeAfterSlider() {
     setIsDragging(false);
   };
 
+  // Manage Vertical Drag Events
+  const handleVerticalMove = (clientY: number) => {
+    if (!vContainerRef.current) return;
+    const rect = vContainerRef.current.getBoundingClientRect();
+    const y = clientY - rect.top;
+    const position = Math.max(0, Math.min(100, (y / rect.height) * 100));
+    setVSliderPosition(position);
+  };
+
+  const handleVerticalMouseMove = (e: MouseEvent) => {
+    if (!isDraggingV) return;
+    handleVerticalMove(e.clientY);
+  };
+
+  const handleVerticalTouchMove = (e: TouchEvent) => {
+    if (!isDraggingV) return;
+    if (e.touches.length > 0) {
+      handleVerticalMove(e.touches[0].clientY);
+    }
+  };
+
+  const handleVerticalMouseUp = () => {
+    setIsDraggingV(false);
+  };
+
   useEffect(() => {
     if (isDragging) {
       window.addEventListener("mousemove", handleMouseMove);
@@ -46,6 +76,22 @@ export default function BeforeAfterSlider() {
       window.removeEventListener("touchend", handleMouseUp);
     };
   }, [isDragging]);
+
+  useEffect(() => {
+    if (isDraggingV) {
+      window.addEventListener("mousemove", handleVerticalMouseMove);
+      window.addEventListener("mouseup", handleVerticalMouseUp);
+      window.addEventListener("touchmove", handleVerticalTouchMove, { passive: true });
+      window.addEventListener("touchend", handleVerticalMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener("mousemove", handleVerticalMouseMove);
+      window.removeEventListener("mouseup", handleVerticalMouseUp);
+      window.removeEventListener("touchmove", handleVerticalTouchMove);
+      window.removeEventListener("touchend", handleVerticalMouseUp);
+    };
+  }, [isDraggingV]);
 
   return (
     <section className="relative py-24 bg-brand-navy-dark px-6">
@@ -63,7 +109,7 @@ export default function BeforeAfterSlider() {
             Before vs After V2
           </h2>
           <p className="text-gray-400 text-base sm:text-lg mt-4 font-light">
-            Slide the controller left and right to see the physical contrast in water scale buildup and appliance longevity.
+            Slide the controller to see the physical contrast in water scale buildup and appliance longevity.
           </p>
         </div>
 
@@ -92,8 +138,8 @@ export default function BeforeAfterSlider() {
             </div>
           </div>
 
-          {/* Center Column: The Interactive Slider Box */}
-          <div className="lg:col-span-6 flex flex-col items-center">
+          {/* Center Column: The Interactive Slider Box (Desktop/Tablet) */}
+          <div className="hidden md:flex lg:col-span-6 flex-col items-center">
             
             <div
               ref={containerRef}
@@ -164,6 +210,67 @@ export default function BeforeAfterSlider() {
 
             <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mt-4">
               Touch and Slide Divider Bar Left or Right
+            </span>
+          </div>
+
+          {/* Mobile Center Column: Vertical comparison layout */}
+          <div className="flex md:hidden col-span-1 flex-col items-center w-full">
+            <div
+              ref={vContainerRef}
+              className="relative w-full aspect-[3/4] rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-[#01050a] select-none cursor-pointer"
+              onMouseDown={(e) => { e.preventDefault(); setIsDraggingV(true); handleVerticalMove(e.clientY); }}
+              onTouchStart={(e) => { setIsDraggingV(true); if (e.touches.length > 0) { handleVerticalMove(e.touches[0].clientY); } }}
+            >
+              
+              {/* TOP VIEW: "Without V2" */}
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-tr from-orange-950/20 to-red-950/10 flex flex-col justify-between p-5 pb-8">
+                <div className="flex-1 flex flex-col items-center justify-center relative">
+                  <div className="w-[150px] h-[45px] rounded-lg bg-yellow-950/40 border border-yellow-800/30 flex items-center justify-center text-center p-2 relative shadow-2xl">
+                    <span className="text-[9px] uppercase font-mono font-bold text-yellow-500">75% CHOKED FLOW</span>
+                  </div>
+                  <div className="h-6 w-1 border-r border-dotted border-red-500 animate-pulse mt-2"></div>
+                </div>
+
+                <div className="flex items-center justify-between mt-auto">
+                  <span className="text-red-400 font-mono text-[10px] uppercase tracking-wider font-black bg-red-950/45 px-2.5 py-1 rounded-full border border-red-500/10">
+                    SABOTAGED UTILITIES
+                  </span>
+                </div>
+              </div>
+
+              {/* BOTTOM VIEW: "With V2" */}
+              <div
+                style={{ clipPath: `polygon(0 ${vSliderPosition}%, 100% ${vSliderPosition}%, 100% 100%, 0 100%)` }}
+                className="absolute inset-0 w-full h-full bg-gradient-to-tr from-brand-blue/35 via-brand-navy-dark to-brand-cyan/20 flex flex-col justify-between p-5 pt-8 select-none transition-transform duration-75"
+              >
+                <div className="flex-1 flex flex-col items-center justify-center relative">
+                  <div className="w-[150px] h-[45px] rounded-lg bg-brand-cyan/20 border border-brand-cyan/50 flex items-center justify-center text-center p-2 relative shadow-glow">
+                    <span className="text-[9px] uppercase font-mono font-bold text-white relative z-10">100% OPTIMAL RUNNING</span>
+                  </div>
+                  <div className="h-6 w-2 bg-gradient-to-b from-brand-cyan to-brand-blue rounded-full animate-pulse mt-2 shadow-glow"></div>
+                </div>
+
+                <div className="flex items-center justify-between mt-auto">
+                  <span className="ml-auto text-brand-cyan font-mono text-[10px] uppercase tracking-wider font-black bg-brand-blue/45 px-2.5 py-1 rounded-full border border-brand-cyan/20">
+                    RESTORED PURITY
+                  </span>
+                </div>
+              </div>
+
+              {/* VERTICAL SLIDER HANDLE BAR */}
+              <div
+                style={{ top: `${vSliderPosition}%` }}
+                className="absolute left-0 right-0 h-[3px] bg-gradient-to-r from-brand-cyan via-white to-brand-blue -translate-y-1/2 z-30 pointer-events-none"
+              >
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-brand-navy border-[2.5px] border-white shadow-xl flex items-center justify-center">
+                  <ArrowLeftRight className="w-4 h-4 text-brand-cyan rotate-90" />
+                </div>
+              </div>
+
+            </div>
+
+            <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mt-4">
+              Touch and Drag Handle Up or Down
             </span>
           </div>
 
